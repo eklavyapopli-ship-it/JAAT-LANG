@@ -17,9 +17,9 @@ function lexer(input) {
             tokens.push({ type: 'keyword', value: "suna de" });
             cursor += 7
         }
-        else if (line.startsWith('likhai suna')) {
-            tokens.push({ type: 'keyword', value: "likhai suna" });
-            cursor += 12
+        else if (line.startsWith('likh de')) {
+            tokens.push({ type: 'keyword', value: "likh de" });
+            cursor += 7
         }
 
         while (cursor < line.length) {
@@ -109,7 +109,7 @@ function parser(tokens) {
                 expression: tokens.shift().value
             });
         };
-        if (token.type === 'keyword' && token.value === "likhai suna") {
+        if (token.type === 'keyword' && token.value === "likh de") {
             ast.body.push({
                 type: 'Print string',
                 expression: tokens.shift().value
