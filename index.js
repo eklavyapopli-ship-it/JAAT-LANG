@@ -123,9 +123,10 @@ function parser(tokens) {
                 arrOf.push(tokens[i].value)
 
             }
+            let resString=arrOf.join(" ");
             ast.body.push({
                 type:'Print string',
-                expression: arrOf
+                expression: resString,
             });
         }
         
