@@ -6,7 +6,7 @@ import fs from "fs";
 function lexer(input) {
     const tokens = [];
 
-    const lines = input.split('\n').map(l => l.trim()).filter(Boolean);
+    const lines = input.split('\n')
     for (let line of lines) {
         let cursor = 0;
         if (line.startsWith('tha le')) {
@@ -20,6 +20,22 @@ function lexer(input) {
         else if (line.startsWith('likh de')) {
             tokens.push({ type: 'keyword', value: "likh de" });
             cursor += 7
+            while(cursor<line.length){
+                let char1=line[cursor];
+                if(/\s/.test(char1)){
+                    cursor++;
+                };
+                if(/[a-zA-Z]/.test(char1)){
+                    let word1='';
+                    let lineString=[];
+                     while (cursor < line.length && /[a-zA-Z0-9]/.test(char1)) {
+                    word1 += char1;
+                    char1 = line[++cursor];
+                }
+                tokens.push({ type: 'string', value: word1 });
+                
+                }
+            }
         }
 
         while (cursor < line.length) {
@@ -39,7 +55,7 @@ function lexer(input) {
                 continue;
 
             }
-
+            
             if (/[\+\-\*\/=]/.test(char)) {
 
 
@@ -56,16 +72,6 @@ function lexer(input) {
 
                 }
                 tokens.push({ type: 'number', value: parseInt(num) });
-                continue;
-            }
-            else if (/^.*$/g.test(char)) {
-                let alpha = '';
-                while (/^.*$/g.test(char)) {
-                    alpha += char;
-                    char = line[++cursor];
-
-                }
-                tokens.push({ type: 'number', value: String(alpha) });
                 continue;
             }
 
@@ -108,13 +114,21 @@ function parser(tokens) {
                 type: 'Print',
                 expression: tokens.shift().value
             });
+            
         };
-        if (token.type === 'keyword' && token.value === "likh de") {
+        if(token.type==='keyword' && token.value==="likh de"){
+            let seperator=" ";
+            let arrOf=[];
+            for (let i = 0; i < tokens.length; i++){
+                arrOf.push(tokens[i].value)
+
+            }
             ast.body.push({
-                type: 'Print string',
-                expression: tokens.shift().value
+                type:'Print string',
+                expression: arrOf
             });
-        };
+        }
+        
 
 
 
@@ -143,6 +157,7 @@ function compiler(input) {
     const tokens = lexer(input);
     const ast = parser(tokens)
     const execCode = codeGen(ast)
+    
     return execCode
 }
 // ar ye thare code ka starter h 
@@ -151,5 +166,6 @@ function runner(input) {
 }
 // Aakhri kaam
 const code = fs.readFileSync('./main.jaat', 'utf-8')
+compiler(code)
 const exec = compiler(code)
 runner(exec)
