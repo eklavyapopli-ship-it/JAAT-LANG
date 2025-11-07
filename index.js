@@ -17,27 +17,49 @@ function lexer(input) {
             tokens.push({ type: 'keyword', value: "suna de" });
             cursor += 7
         }
-        else if (line.startsWith('likh de')) {
-            tokens.push({ type: 'keyword', value: "likh de" });
-            cursor += 7
-            while(cursor<line.length){
-                let char1=line[cursor];
-                if(/\s/.test(char1)){
-                    cursor++;
-                };
-                if(/[a-zA-Z]/.test(char1)){
-                    let word1='';
-                    let lineString=[];
-                     while (cursor < line.length && /[a-zA-Z0-9]/.test(char1)) {
-                    word1 += char1;
-                    char1 = line[++cursor];
-                }
-                tokens.push({ type: 'string', value: word1 });
-                
-                }
-            }
+       else if (line.startsWith('likh de')) {
+    tokens.push({ type: 'keyword', value: "likh de" });
+    cursor += 7;
+
+    while (cursor < line.length) {
+        let char1 = line[cursor];
+
+        // skip whitespace
+        if (/\s/.test(char1)) {
+            cursor++;
+            continue;
         }
 
+        // ✅ Handle string literals inside double quotes
+        if (char1 === '"') {
+            cursor++; // skip opening quote
+            let str = '';
+            while (cursor < line.length && line[cursor] !== '"') {
+                str += line[cursor++];
+            }
+            cursor++; // skip closing quote
+          
+              
+                tokens.push({ type: 'string', value: str });
+            continue;
+            
+
+          
+        }
+
+        // fallback for normal identifiers or words
+        if (/[a-zA-Z]/.test(char1)) {
+            let word1 = '';
+            while (cursor < line.length && /[a-zA-Z0-9]/.test(char1)) {
+                word1 += line[cursor++];
+            }
+            tokens.push({ type: 'identifier', value: word1 });
+            continue;
+        }
+
+        cursor++;
+    }
+}
         while (cursor < line.length) {
             let char = line[cursor];
             if (/\s/.test(char)) {
@@ -55,7 +77,7 @@ function lexer(input) {
                 continue;
 
             }
-            
+
             if (/[\+\-\*\/=]/.test(char)) {
 
 
@@ -114,22 +136,25 @@ function parser(tokens) {
                 type: 'Print',
                 expression: tokens.shift().value
             });
-            
+
         };
-        if(token.type==='keyword' && token.value==="likh de"){
-            let seperator=" ";
-            let arrOf=[];
-            for (let i = 0; i < tokens.length; i++){
-                arrOf.push(tokens[i].value)
+        if (token.type === 'keyword' && token.value === "likh de") {
+            let seperator = " ";
+            let arrOf = [];
+            for (let i = 0; i < tokens.length; i++) {
+                // arrOf.push(tokens[i].value)
+                if(tokens[i].type === 'string'){
+                    arrOf.push(tokens[i].value)
+                }
 
             }
-            let resString=arrOf.join(" ");
+            let resString = arrOf.join(" ");
             ast.body.push({
-                type:'Print string',
+                type: 'Print string',
                 expression: resString,
             });
         }
-        
+
 
 
 
@@ -158,7 +183,7 @@ function compiler(input) {
     const tokens = lexer(input);
     const ast = parser(tokens)
     const execCode = codeGen(ast)
-    
+
     return execCode
 }
 // ar ye thare code ka starter h 
