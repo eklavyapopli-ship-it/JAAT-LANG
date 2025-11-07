@@ -1,13 +1,16 @@
 {
-  "name": "jaat",
-  "version": "1.0.0",
-  "description": "",
+  "name": "jaat-lang",
+  "version": "1.0.3",
+  "description": "A Haryanvi-inspired programming language built in Node.js",
   "main": "index.js",
-  "scripts": {
-    "jaat": "node index.js"
+  "bin": {
+    "jaat": "./index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "run": "node index.js"
+  },
+  "keywords": ["compiler", "language", "jaat-lang", "haryanvi"],
+  "author": "Eklavya Popli",
+  "license": "MIT",
   "type": "module"
 }

@@ -3,13 +3,9 @@ tha le b = 20
 tha le sum = a+b
 suna de sum
 suna de 10
-likh de "namaste bhai kaisa ho"
-tha le c = 30
-tha le d = 40
-tha le sum1 = c+d
-suna de sum1
-
-
+likh de "hello" 
+suna de 10
+likh de "hello raam raam"
 
 
 
