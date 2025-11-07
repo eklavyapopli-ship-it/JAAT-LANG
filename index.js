@@ -37,7 +37,7 @@ function lexer(input) {
             while (cursor < line.length && line[cursor] !== '"') {
                 str += line[cursor++];
             }
-            cursor++; // skip closing quote
+            
           
               
                 tokens.push({ type: 'string', value: str });
@@ -46,6 +46,7 @@ function lexer(input) {
 
           
         }
+        cursor++;
 
         // fallback for normal identifiers or words
         if (/[a-zA-Z]/.test(char1)) {
