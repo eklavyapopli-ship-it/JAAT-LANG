@@ -1,6 +1,6 @@
 {
   "name": "jaat-lang",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Haryanvi-inspired programming language built in Node.js",
   "main": "index.js",
   "bin": {

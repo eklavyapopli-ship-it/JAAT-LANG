@@ -25,13 +25,14 @@ export function lexer(input) {
             continue;
         }
 
-        // ✅ Handle string literals inside double quotes
+        
         if (char1 === '"') {
-            cursor++; // skip opening quote
+            cursor++; 
             let str = '';
             while (cursor < line.length && line[cursor] !== '"') {
                 str += line[cursor++];
             }
+
               
                 tokens.push({ type: 'string', value: str });
             continue;
@@ -41,7 +42,7 @@ export function lexer(input) {
         }
         cursor++;
 
-        // fallback for normal identifiers or words
+       
         if (/[a-zA-Z]/.test(char1)) {
             let word1 = '';
             while (cursor < line.length && /[a-zA-Z0-9]/.test(char1)) {
